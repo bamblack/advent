@@ -1,21 +1,23 @@
-import { Args } from '@oclif/core'
-import { BaseCommand } from '../../base-command';
+import {Args} from '@oclif/core'
+
+import {BaseCommand} from '../../base-command'
 
 export default class ConfigSet extends BaseCommand<typeof ConfigSet> {
-    static description = 'modify a config value'
-    static args = {
-        key: Args.string({
-            required: true,
-            description: 'key of setting being modified'
-        }),
-        value: Args.string({
-            required: true,
-            description: 'value for setting'
-        })
-    }
+  static args = {
+    key: Args.string({
+      description: 'key of setting being modified',
+      required: true,
+    }),
+    value: Args.string({
+      description: 'value for setting',
+      required: true,
+    }),
+  }
 
-    public async run(): Promise<void> {
-        const { args } = await this.parse(ConfigSet)
-        process.stdout.write(`${args.key} ${args.value}`);
-    }
+  static description = 'modify a config value'
+
+  public async run(): Promise<void> {
+    const {args} = await this.parse(ConfigSet)
+    process.stdout.write(`${args.key} ${args.value}`)
+  }
 }

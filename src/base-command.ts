@@ -1,69 +1,72 @@
-import { Command, Flags, Interfaces } from '@oclif/core'
+import {Command, Flags, Interfaces} from '@oclif/core'
+// eslint-disable-next-line node/no-extraneous-import
 import * as fs from 'fs-extra'
-import * as path from 'path'
-import { ERROR_CODES } from './constants/ERROR_CODES';
-import { CliConfig } from './types/CliConfig';
+import * as path from 'node:path'
+
+import {ERROR_CODES} from './constants/error-codes'
+import {CliConfig} from './types/cli-config'
 
 enum LogLevel {
-    debug = 'debug',
-    info = 'info',
-    warn = 'warn',
-    error = 'error',
+  debug = 'debug',
+  error = 'error',
+  info = 'info',
+  warn = 'warn',
 }
 
-export type Flags<T extends typeof Command> = Interfaces.InferredFlags<typeof BaseCommand['baseFlags'] & T['flags']>;
-export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>;
+export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
+export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 
 export abstract class BaseCommand<T extends typeof Command> extends Command {
-    // add the --json flag
-    static enableJsonFlag = true
+  // define flags that can be inherited by any command that extends BaseCommand
+  static baseFlags = {
+    'log-level': Flags.custom<LogLevel>({
+      helpGroup: 'GLOBAL',
+      options: Object.values(LogLevel),
+      summary: 'Specify level for logging.',
+    })(),
+  }
 
-    // define flags that can be inherited by any command that extends BaseCommand
-    static baseFlags = {
-        'log-level': Flags.custom<LogLevel>({
-            summary: 'Specify level for logging.',
-            options: Object.values(LogLevel),
-            helpGroup: 'GLOBAL',
-        })(),
+  // add the --json flag
+  static enableJsonFlag = true
+
+  protected args!: Args<T>
+  protected cliConfig!: CliConfig
+  protected flags!: Flags<T>
+
+  protected async catch(err: Error & {exitCode?: number}): Promise<unknown> {
+    // add any custom logic to handle errors from the command
+    // or simply return the parent class error handling
+    return super.catch(err)
+  }
+
+  protected async finally(_: Error | undefined): Promise<unknown> {
+    // called after run and catch regardless of whether or not the command errored
+    return super.finally(_)
+  }
+
+  public async init(): Promise<void> {
+    await super.init()
+
+    const configFile = path.join(this.config.configDir, 'config.json')
+    if (!(await fs.exists(configFile))) {
+      this.error(new Error('This command cannot be run until configuration is complete'), {
+        code: ERROR_CODES.ConfigNotRun,
+        exit: 2,
+        suggestions: ['advent setup'],
+      })
     }
 
-    protected flags!: Flags<T>;
-    protected args!: Args<T>;
-    protected cliConfig!: CliConfig;
+    const {args, flags} = await this.parse({
+      args: this.ctor.args,
+      baseFlags: (super.ctor as typeof BaseCommand).baseFlags,
+      enableJsonFlag: this.ctor.enableJsonFlag,
+      flags: this.ctor.flags,
+      strict: this.ctor.strict,
+    })
+    const cliConfig = await fs.readJSON(configFile)
 
-    public async init(): Promise<void> {
-        await super.init();
-
-        const configFile = path.join(this.config.configDir, 'config.json');
-        if (!(await fs.exists(configFile))) {
-            this.error(
-                new Error('This command cannot be run until configuration is complete'),
-                { exit: 2, code: ERROR_CODES.ConfigNotRun, suggestions: ['advent setup'] }
-            );
-        }
-
-        const { args, flags } = await this.parse({
-            flags: this.ctor.flags,
-            baseFlags: (super.ctor as typeof BaseCommand).baseFlags,
-            enableJsonFlag: this.ctor.enableJsonFlag,
-            args: this.ctor.args,
-            strict: this.ctor.strict,
-        });
-        const cliConfig = await fs.readJSON(configFile);
-
-        this.flags = flags as Flags<T>;
-        this.args = args as Args<T>;
-        this.cliConfig = cliConfig;
-    }
-
-    protected async catch(err: Error & { exitCode?: number }): Promise<any> {
-        // add any custom logic to handle errors from the command
-        // or simply return the parent class error handling
-        return super.catch(err)
-    }
-
-    protected async finally(_: Error | undefined): Promise<any> {
-        // called after run and catch regardless of whether or not the command errored
-        return super.finally(_)
-    }
+    this.flags = flags as Flags<T>
+    this.args = args as Args<T>
+    this.cliConfig = cliConfig
+  }
 }

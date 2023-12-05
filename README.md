@@ -1,7 +1,7 @@
-oclif-hello-world
+advent
 =================
 
-oclif example Hello World CLI
+A CLI to interact with Advent of Code, built with oclif
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
@@ -18,7 +18,7 @@ $ npm install -g advent
 $ advent COMMAND
 running command...
 $ advent (--version)
-advent/0.0.0 win32-x64 node-v18.19.0
+advent/0.0.0 win32-x64 node-v16.19.0
 $ advent --help [COMMAND]
 USAGE
   $ advent COMMAND
@@ -31,6 +31,7 @@ USAGE
 * [`advent config set KEY VALUE`](#advent-config-set-key-value)
 * [`advent fetch`](#advent-fetch)
 * [`advent help [COMMANDS]`](#advent-help-commands)
+* [`advent setup`](#advent-setup)
 
 ## `advent config get KEY`
 
@@ -41,7 +42,7 @@ USAGE
   $ advent config get KEY
 
 ARGUMENTS
-  KEY  key of setting being retrieved
+  KEY  (session|repo) key of setting being retrieved
 
 DESCRIPTION
   retrieve a config value
@@ -107,4 +108,18 @@ DESCRIPTION
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.0.7/lib/commands/help.ts)_
+
+## `advent setup`
+
+set up the configuration file for advent
+
+```
+USAGE
+  $ advent setup
+
+DESCRIPTION
+  set up the configuration file for advent
+```
+
+_See code: [dist/commands/setup.ts](https://github.com/bamblack/advent/blob/v0.0.0/dist/commands/setup.ts)_
 <!-- commandsstop -->
