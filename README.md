@@ -1,16 +1,44 @@
 advent
 =================
 
-A CLI to interact with Advent of Code, built with oclif
+A CLI to interact with Advent of Code, built with oclif.
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![CircleCI](https://circleci.com/gh/oclif/hello-world/tree/main.svg?style=shield)](https://circleci.com/gh/oclif/hello-world/tree/main)
 [![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/oclif/hello-world/blob/main/LICENSE)
 
 <!-- toc -->
+* [Install and Setup](#install-and-setup)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
+
+# Install and Setup
+Before running anything ion the CLI you need to do a few things:
+
+1. [Retrieve your Advent of Code session cookie](https://github.com/wimglenn/advent-of-code-wim/issues/1)
+   * This should be the full cokie starting with `session=`
+2. Have your code directory set up
+   * This should be a directory that looks something like the code block below. (You don't need to worry about manually creating the `src/`, `{year}/` or `{day}/` folders, the CLI handles that for you). 
+   * Template files are used to quickly give you a running start with coding for the puzzle and can be whatever type of file you want and have any contents you want. They (there can be one or more) just need to be named `template.{extension}`
+  
+ ```
+my-directory
+├── src
+│   ├── {year}
+│   │   ├── {day}
+├── template.js
+└── template.cs
+```
+Once that has been done run the below commands
+
+```sh-session
+$ npm install -g advent
+$ advent setup
+```
+
+Running `advent setup` will walk you through some prompts for configuring the CLI where you input the session cookie retrieve in step 1 above and tell it where your code directory from step 2 above is. Once you have done this you can being using the CLI
+
 # Usage
 <!-- usage -->
 ```sh-session
@@ -27,46 +55,9 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`advent config get KEY`](#advent-config-get-key)
-* [`advent config set KEY VALUE`](#advent-config-set-key-value)
 * [`advent fetch`](#advent-fetch)
 * [`advent help [COMMANDS]`](#advent-help-commands)
 * [`advent setup`](#advent-setup)
-
-## `advent config get KEY`
-
-retrieve a config value
-
-```
-USAGE
-  $ advent config get KEY
-
-ARGUMENTS
-  KEY  (session|repo) key of setting being retrieved
-
-DESCRIPTION
-  retrieve a config value
-```
-
-_See code: [dist/commands/config/get.ts](https://github.com/bamblack/advent/blob/v0.0.0/dist/commands/config/get.ts)_
-
-## `advent config set KEY VALUE`
-
-modify a config value
-
-```
-USAGE
-  $ advent config set KEY VALUE
-
-ARGUMENTS
-  KEY    key of setting being modified
-  VALUE  value for setting
-
-DESCRIPTION
-  modify a config value
-```
-
-_See code: [dist/commands/config/set.ts](https://github.com/bamblack/advent/blob/v0.0.0/dist/commands/config/set.ts)_
 
 ## `advent fetch`
 
@@ -74,7 +65,7 @@ fetch your puzzle and the input for the day
 
 ```
 USAGE
-  $ advent fetch [--year <value>] [--day <value>]
+  $ advent fetch [--day <value>] [--year <value>]
 
 FLAGS
   --day=<value>   Specific day

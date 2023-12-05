@@ -31,6 +31,11 @@ export default class Fetch extends BaseCommand<typeof Fetch> {
     await this.getInputFile(dirPath, year, day)
   }
 
+  /**
+   * Copy any template files from the repository base into a daily directory
+   * @param {string} dirPath    Repository path to look for template files
+   * @returns {void}
+   */
   private async getCodeFile(dirPath: string): Promise<void> {
     const codeFile = path.join(dirPath, 'index.*')
     if (!(await fs.exists(codeFile))) {
@@ -61,6 +66,13 @@ export default class Fetch extends BaseCommand<typeof Fetch> {
     }
   }
 
+  /**
+   * Retrieve the example from the puzzle page on the AOC website and save it to a file within a daily directory in the configured repo
+   * @param {string} dirPath    Repository path to look for template files
+   * @param {number} year       Year for AoC URL
+   * @param {number} day        Day for AoC URL
+   * @returns {void}
+   */
   private async getExampleFile(dirPath: string, year: number, day: number): Promise<void> {
     const testFile = path.join(dirPath, 'example.txt')
     if (!(await fs.exists(testFile))) {
@@ -78,6 +90,13 @@ export default class Fetch extends BaseCommand<typeof Fetch> {
     }
   }
 
+  /**
+   * Retrieve the puzzle input from the AoC API and save it to a file within a daily directory in the configured repo
+   * @param {string} dirPath    Repository path to look for template files
+   * @param {number} year       Year for AoC URL
+   * @param {number} day        Day for AoC URL
+   * @returns {void}
+   */
   private async getInputFile(dirPath: string, year: number, day: number): Promise<void> {
     const inputFile = path.join(dirPath, 'input.txt')
     if (!(await fs.exists(inputFile))) {
