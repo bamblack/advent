@@ -3,8 +3,8 @@ import {
   ensureDir as ensureDirOrig,
   ensureFile as ensureFileOrig,
   exists as existsOrig,
-  readdir as readdirOrig,
   readJSON as readJSONOrig,
+  readdir as readdirOrig,
   stat as statOrig,
   writeFile as writeFileOrig,
 } from 'fs-extra'

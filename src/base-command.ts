@@ -1,9 +1,9 @@
 import {Command, Flags, Interfaces} from '@oclif/core'
-import {exists, readJSON} from './wrappers/fs-extra'
 import * as path from 'node:path'
 
 import {ERROR_CODES} from './constants/error-codes'
 import {CliConfig} from './types/cli-config'
+import {exists, readJSON} from './wrappers/fs-extra'
 
 enum LogLevel {
   debug = 'debug',
