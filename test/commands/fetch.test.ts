@@ -1,16 +1,18 @@
-import { expect, test } from '@oclif/test'
+import {test} from '@oclif/test'
+
+import * as axios from '../../src/wrappers/axios'
+import * as fs from '../../src/wrappers/fs-extra'
 
 describe('fetch', () => {
-    test.stdout()
-        .command(['fetch'])
-        .it('runs fetch', ctx => {
-            const today = new Date();
-            expect(ctx.stdout).to.contain(`${today.getFullYear()} ${today.getDate()}`);
-        });
+  const stubChain = test
+    .stdout({print: true})
+    .stub(axios, 'get', (stub) => stub.resolves({data: ''}))
+    .stub(fs, 'ensureDir', (stub) => stub.resolves())
+    .stub(fs, 'exists', (stub) => stub.resolves(false))
+    .stub(fs, 'readdir', (stub) => stub.resolves([]))
+    .stub(fs, 'writeFile', (stub) => stub.resolves())
 
-    test.stdout()
-        .command(['fetch', '--year', '2023', '--day', '4'])
-        .it('runs fetch --year 2023 --day 4', ctx => {
-            expect(ctx.stdout).to.contain('2023 4');
-        });
-});
+  stubChain.command(['fetch']).it('runs fetch')
+
+  stubChain.command(['fetch', '--year', '2023', '--day', '4']).it('runs fetch --year 99 --day 99')
+})

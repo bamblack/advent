@@ -1,5 +1,4 @@
-advent
-=================
+# advent
 
 A CLI to interact with Advent of Code, built with oclif.
 
@@ -8,21 +7,23 @@ A CLI to interact with Advent of Code, built with oclif.
 [![GitHub license](https://img.shields.io/github/license/oclif/hello-world)](https://github.com/oclif/hello-world/blob/main/LICENSE)
 
 <!-- toc -->
-* [Install and Setup](#install-and-setup)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Install and Setup](#install-and-setup)
+- [Usage](#usage)
+- [Commands](#commands)
 <!-- tocstop -->
 
 # Install and Setup
-Before running anything ion the CLI you need to do a few things:
+
+Before running anything in the CLI you need to do a few things:
 
 1. [Retrieve your Advent of Code session cookie](https://github.com/wimglenn/advent-of-code-wim/issues/1)
-   * This should be the full cokie starting with `session=`
+   - This should be the full cokie starting with `session=`
 2. Have your code directory set up
-   * This should be a directory that looks something like the code block below. (You don't need to worry about manually creating the `src/`, `{year}/` or `{day}/` folders, the CLI handles that for you). 
-   * Template files are used to quickly give you a running start with coding for the puzzle and can be whatever type of file you want and have any contents you want. They (there can be one or more) just need to be named `template.{extension}`
-  
- ```
+   - This should be a directory that looks something like the code block below. (You don't need to worry about manually creating the `src/`, `{year}/` or `{day}/` folders, the CLI handles that for you).
+   - Template files are used to quickly give you a running start with coding for the puzzle and can be whatever type of file you want and have any contents you want. They (there can be one or more) just need to be named `template.{extension}`
+
+```
 my-directory
 ├── src
 │   ├── {year}
@@ -30,6 +31,7 @@ my-directory
 ├── template.js
 └── template.cs
 ```
+
 Once that has been done run the below commands
 
 ```sh-session
@@ -40,7 +42,9 @@ $ advent setup
 Running `advent setup` will walk you through some prompts for configuring the CLI where you input the session cookie retrieve in step 1 above and tell it where your code directory from step 2 above is. Once you have done this you can being using the CLI
 
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g advent
 $ advent COMMAND
@@ -52,12 +56,16 @@ USAGE
   $ advent COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`advent fetch`](#advent-fetch)
-* [`advent help [COMMANDS]`](#advent-help-commands)
-* [`advent setup`](#advent-setup)
+
+- [`advent fetch`](#advent-fetch)
+- [`advent help [COMMANDS]`](#advent-help-commands)
+- [`advent setup`](#advent-setup)
 
 ## `advent fetch`
 
@@ -113,4 +121,5 @@ DESCRIPTION
 ```
 
 _See code: [dist/commands/setup.ts](https://github.com/bamblack/advent/blob/v0.0.0/dist/commands/setup.ts)_
+
 <!-- commandsstop -->

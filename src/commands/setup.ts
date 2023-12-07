@@ -1,34 +1,24 @@
+import * as inquirer from '@inquirer/prompts'
 import {Command} from '@oclif/core'
-// eslint-disable-next-line node/no-extraneous-import
-import * as fs from 'fs-extra'
 import * as path from 'node:path'
+
+import {ensureFile, writeFile} from '../wrappers/fs-extra'
 
 export default class Setup extends Command {
   static description = 'set up the configuration file for advent'
 
   public async run(): Promise<void> {
-    const {default: inquirer} = await import('inquirer')
-    inquirer.registerPrompt('directory', require('inquirer-select-directory'))
-    const reponse: {repo: string; session: string} = await inquirer.prompt([
-      {
-        message: 'What is your AoC session key?',
-        name: 'session',
-        type: 'input',
-      },
-      {
-        basePath: 'C:/Projects',
-        message: 'Where is your code repo located?',
-        name: 'repo',
-        options: {
-          displayFiles: false,
-        },
-        type: 'directory',
-      },
-    ])
-    const configContents = JSON.stringify({...reponse})
+    inquirer
+    const session = await inquirer.input({
+      message: 'What is your AoC session key?',
+    })
+    const repo = await inquirer.input({
+      message: 'Where is your code directory located?',
+    })
 
+    const configContents = JSON.stringify({repo, session})
     const configFile = path.join(this.config.configDir, 'config.json')
-    await fs.ensureFile(configFile)
-    await fs.writeFile(configFile, configContents, 'utf8')
+    await ensureFile(configFile)
+    await writeFile(configFile, configContents, 'utf8')
   }
 }

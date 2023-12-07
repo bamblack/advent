@@ -17,4 +17,4 @@ node_modules
 node_modules
 oclif.lock
 oclif.manifest.json
-tsconfig.buildinfo
+tsconfig.tsbuildinfo

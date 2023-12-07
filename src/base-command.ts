@@ -1,6 +1,5 @@
 import {Command, Flags, Interfaces} from '@oclif/core'
-// eslint-disable-next-line node/no-extraneous-import
-import * as fs from 'fs-extra'
+import {exists, readJSON} from './wrappers/fs-extra'
 import * as path from 'node:path'
 
 import {ERROR_CODES} from './constants/error-codes'
@@ -48,7 +47,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     await super.init()
 
     const configFile = path.join(this.config.configDir, 'config.json')
-    if (!(await fs.exists(configFile))) {
+    if (!(await exists(configFile))) {
       this.error(new Error('This command cannot be run until configuration is complete'), {
         code: ERROR_CODES.ConfigNotRun,
         exit: 2,
@@ -63,7 +62,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
       flags: this.ctor.flags,
       strict: this.ctor.strict,
     })
-    const cliConfig = await fs.readJSON(configFile)
+    const cliConfig = await readJSON(configFile)
 
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
